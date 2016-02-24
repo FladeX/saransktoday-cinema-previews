@@ -1,6 +1,7 @@
 var request = require('request');
 var htmlparser = require('htmlparser2');
 var kinopoisk = require('kinopoisk-ru');
+var fs = require('fs');
 
 var source = 'http://saransktoday.ru/cinema/';
 
@@ -24,8 +25,21 @@ request(source, function(error, response, html) {
       ontext: function(text) {
         if (isItemFound && isTitleFound && isLinkFound) {
           kinopoisk.search(text, null, function(searchError, result) {
+            var movieId = result[0].id;
             if (!searchError) {
-              console.log('http://www.kinopoisk.ru/images/film_big/' + result[0].id + '.jpg');
+              var options = {
+                host: 'www.kinopoisk.ru',
+                path: '/images/film_big/' + movieId + '.jpg'
+              };
+              request.get({url: 'http://www.kinopoisk.ru/images/film_big/' + movieId + '.jpg', encoding: 'binary'}, function(error, response, body) {
+                fs.writeFile(movieId + '.jpg', body, 'binary', function(error) {
+                  if (error) {
+                    console.log(error);
+                  } else {
+                    console.log('The preview for movie \'' + result[0].title + '\' was saved!');
+                  }
+                });
+              });
             } else {
               console.log(searchError);
             }
