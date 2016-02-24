@@ -2,8 +2,17 @@ var request = require('request');
 var htmlparser = require('htmlparser2');
 var kinopoisk = require('kinopoisk-ru');
 var fs = require('fs');
+var week = require('week');
 
 var source = 'http://saransktoday.ru/cinema/';
+var weekNumber = week();
+
+if (!fs.existsSync('images')) {
+  fs.mkdir('images');
+}
+if (!fs.existsSync('images/' + weekNumber)) {
+  fs.mkdir('images/' + weekNumber);
+}
 
 request(source, function(error, response, html) {
   if (!error && response.statusCode === 200) {
@@ -32,7 +41,7 @@ request(source, function(error, response, html) {
                 path: '/images/film_big/' + movieId + '.jpg'
               };
               request.get({url: 'http://www.kinopoisk.ru/images/film_big/' + movieId + '.jpg', encoding: 'binary'}, function(error, response, body) {
-                fs.writeFile(movieId + '.jpg', body, 'binary', function(error) {
+                fs.writeFile('images/' + weekNumber + '/' + movieId + '.jpg', body, 'binary', function(error) {
                   if (error) {
                     console.log(error);
                   } else {
