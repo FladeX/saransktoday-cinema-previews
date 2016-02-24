@@ -1,0 +1,8 @@
+{
+  "name": "saransktoday-cinema-anounce",
+  "version": "0.0.1",
+  "dependencies": {
+    "request": "^2.69.0",
+    "htmlparser2": "^3.9.0"
+  }
+}
