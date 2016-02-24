@@ -1,8 +1,9 @@
 {
-  "name": "saransktoday-cinema-anounce",
+  "name": "saransktoday-cinema-previews",
   "version": "0.0.1",
   "dependencies": {
     "request": "^2.69.0",
-    "htmlparser2": "^3.9.0"
+    "htmlparser2": "^3.9.0",
+    "kinopoisk-ru": "^1.0.0"
   }
 }

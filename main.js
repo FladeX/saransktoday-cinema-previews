@@ -1,5 +1,6 @@
 var request = require('request');
 var htmlparser = require('htmlparser2');
+var kinopoisk = require('kinopoisk-ru');
 
 var source = 'http://saransktoday.ru/cinema/';
 
@@ -22,7 +23,13 @@ request(source, function(error, response, html) {
       },
       ontext: function(text) {
         if (isItemFound && isTitleFound && isLinkFound) {
-          console.log(text);
+          kinopoisk.search(text, null, function(searchError, result) {
+            if (!searchError) {
+              console.log('http://www.kinopoisk.ru/images/film_big/' + result[0].id + '.jpg');
+            } else {
+              console.log(searchError);
+            }
+          });
           isItemFound = false;
           isTitleFound = false;
           isLinkFound = false;
